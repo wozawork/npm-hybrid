@@ -3,3 +3,21 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+jest.mock("@biocatch/js-sdk", () => {
+  const sdkInstance = {
+    start: jest.fn(),
+    stop: jest.fn(),
+    pause: jest.fn(),
+    resume: jest.fn(),
+    flush: jest.fn(),
+    updateCustomerSessionID: jest.fn(),
+  };
+
+  return {
+    __esModule: true,
+    default: {
+      getInstance: jest.fn(() => sdkInstance),
+    },
+  };
+});

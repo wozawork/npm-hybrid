@@ -1,0 +1,45 @@
+import { configurations } from "./configurations";
+import { csid, getBioCatchModeByClient } from "./Util";
+import SDK from "./sdk";
+
+export const startBioCatchService = () => {
+  console.log(SDK);
+
+  const csidValue = csid();
+  const runtimeClientConfiguration = {
+    ...configurations.client_side_configurations,
+    collectionSettings: {
+      ...(configurations.client_side_configurations.collectionSettings || {}),
+      mode: getBioCatchModeByClient(),
+    },
+  };
+
+  SDK.start(
+    configurations.baseUrl,
+    configurations.cid,
+    csidValue,
+    runtimeClientConfiguration,
+    configurations.serverVersion,
+  );
+};
+
+export const stopBioCatchService = () => {
+  SDK.stop();
+};
+
+export const pauseBioCatchService = () => {
+  SDK.pause();
+};
+
+export const resumeBioCatchService = () => {
+  SDK.resume();
+};
+
+export const flushBioCatchService = () => {
+  SDK.flush();
+};
+
+export const updateCustomerSessionIdBioCatchService = (customerSessionId) => {
+  // SDK method name uses trailing ID in uppercase.
+  SDK.updateCustomerSessionID(customerSessionId);
+};
