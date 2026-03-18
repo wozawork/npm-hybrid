@@ -8,6 +8,42 @@ export const csid = () => {
   return result;
 };
 
+const getMetaContent = (metaName) => {
+  if (typeof document === "undefined") {
+    return "";
+  }
+
+  const meta = document.querySelector(`meta[name="${metaName}"]`);
+  return (meta?.getAttribute("content") || "").trim();
+};
+
+const getCookieValue = (cookieName) => {
+  if (typeof document === "undefined") {
+    return "";
+  }
+
+  const escapedCookieName = cookieName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const cookieMatch = document.cookie.match(
+    new RegExp(`(?:^|; )${escapedCookieName}=([^;]*)`),
+  );
+  return cookieMatch ? decodeURIComponent(cookieMatch[1]).trim() : "";
+};
+
+export const getInjectedCustomerSessionId = () => {
+  // Android host app injects this as <meta name="customerSessionId" content="..." />.
+  const fromMetaTag = getMetaContent("customerSessionId");
+  if (fromMetaTag) {
+    return fromMetaTag;
+  }
+
+  // Fallback in case host app uses cookie injection instead of meta tag.
+  return getCookieValue("customerSessionId");
+};
+
+export const getStartupCustomerSessionId = () => {
+  return getInjectedCustomerSessionId() || csid();
+};
+
 const getUserAgent = () => {
   if (typeof navigator === "undefined") {
     return "";

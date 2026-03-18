@@ -1,11 +1,11 @@
 import { configurations } from "./configurations";
-import { csid, getBioCatchModeByClient } from "./Util";
+import { getBioCatchModeByClient, getStartupCustomerSessionId } from "./Util";
 import SDK from "./sdk";
 
 export const startBioCatchService = () => {
   console.log(SDK);
 
-  const csidValue = csid();
+  const csidValue = getStartupCustomerSessionId();
   const runtimeClientConfiguration = {
     ...configurations.client_side_configurations,
     collectionSettings: {
