@@ -41,7 +41,7 @@ export const getInjectedCustomerSessionId = () => {
 };
 
 export const getStartupCustomerSessionId = () => {
-  return getInjectedCustomerSessionId() || csid();
+  return getInjectedCustomerSessionId();
 };
 
 const getUserAgent = () => {

@@ -6,6 +6,13 @@ export const startBioCatchService = () => {
   console.log(SDK);
 
   const csidValue = getStartupCustomerSessionId();
+  if (!csidValue) {
+    console.error(
+      "BioCatch startup aborted: customerSessionId was not found in injected meta tag or cookie.",
+    );
+    return;
+  }
+
   const runtimeClientConfiguration = {
     ...configurations.client_side_configurations,
     collectionSettings: {
